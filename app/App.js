@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { Button, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import './assets/UtilityUnraveled_Logo.png';
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer } from '@react-navigation/native';
 
 export default function App() {
   return (
