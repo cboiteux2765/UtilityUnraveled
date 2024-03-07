@@ -1,30 +1,31 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Button, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import './assets/UtilityUnraveled_Logo.png';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import tw from 'twrnc';
 
 function HomeScreen({ navigation }) {
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
-        <Image source={require('./assets/UtilityUnraveled_Logo.png')} style={{width:300, height:150}}></Image>
-        
-        <Text style={{textAlign:"center"}}>
-          {"\n"}
-          Welcome to Utility Unraveled!{"\n"}
-          By SupremaCE: Clem, Mihir, and Will
-        </Text>
+    <View style={tw`flex-1 justify-center items-center bg-green-300`}>
+      <Image source={require('./assets/UtilityUnraveled_Logo.png')} style={{width:300, height:150}}></Image>
+      
+      <Text style={tw`text-black`}>
+        {"\n"}
+        Welcome to Utility Unraveled!{"\n"}
+        By SupremaCE: Clem, Mihir, and Will
+      </Text>
+      <TouchableOpacity style={tw`bg-teal-500 p-2 rounded-lg`}>
         <Button 
           title="Get Started" 
-          color='red'
+          color='blue'
           onPress={()=>navigation.navigate("Login")}
         ></Button>
-        <StatusBar style="auto" />
-      </View>
-    </SafeAreaView>
+      </TouchableOpacity>
+      <StatusBar style='dark'></StatusBar>
+    </View>
   );
 }
 

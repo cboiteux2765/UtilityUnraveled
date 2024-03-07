@@ -1,1 +1,4 @@
 https://tailwindcss.com/docs/installation
+https://developers.google.com/maps/documentation
+https://reactnavigation.org/docs/navigating
+https://icons8.com/icons/set/

@@ -1,12 +1,17 @@
 import { React, useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 import { Link, NavigationContext } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 
 function Login() {
 
   const [email, onChangeEmail] = useState("");
   const [password, onChangePassword] = useState("");
+
+  function handleSubmit() {
+    
+  }
 
   return (
     <View style={styles.container}>
@@ -14,6 +19,9 @@ function Login() {
       <TextInput onChangeText={onChangeEmail} style={styles.inputField} value={email}></TextInput>
       <Text>Password</Text>
       <TextInput secureTextEntry={true} onChangeText={onChangePassword} style={styles.inputField} value={password}></TextInput>
+      
+      <Button title="Submit" onPress={handleSubmit}></Button>
+      
       <Text>Forgot Password?</Text>
       <Text>Don't have an account? <Link style={styles.link} to={{screen:"Signup"}}>Sign Up</Link></Text>
     </View>
