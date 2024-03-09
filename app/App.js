@@ -12,7 +12,7 @@ function HomeScreen({ navigation }) {
     <View style={tw`flex-1 justify-center items-center bg-green-300`}>
       <Image source={require('./assets/UtilityUnraveled_Logo.png')} style={{width:300, height:150}}></Image>
       
-      <Text style={tw`text-black`}>
+      <Text style={tw`text-black justify-center text-center`}>
         {"\n"}
         Welcome to Utility Unraveled!{"\n"}
         By SupremaCE: Clem, Mihir, and Will
@@ -42,12 +42,3 @@ export default function App() {
       </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'aqua',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

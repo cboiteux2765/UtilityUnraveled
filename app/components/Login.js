@@ -2,7 +2,8 @@ import { React, useState } from 'react';
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 import { Link, NavigationContext } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import tw from 'twrnc';
+import Footer from './Footer';
 
 function Login() {
 
@@ -14,16 +15,17 @@ function Login() {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={tw`flex-1 justify-center items-center bg-green-300`}>
       <Text>UCSB Email</Text>
-      <TextInput onChangeText={onChangeEmail} style={styles.inputField} value={email}></TextInput>
+      <TextInput onChangeText={onChangeEmail} style={tw`bg-white border rounded-lg border-black border-2`} value={email}></TextInput>
       <Text>Password</Text>
-      <TextInput secureTextEntry={true} onChangeText={onChangePassword} style={styles.inputField} value={password}></TextInput>
+      <TextInput secureTextEntry={true} onChangeText={onChangePassword} style={tw`bg-white border rounded-lg border-black border-2`} value={password}></TextInput>
       
       <Button title="Submit" onPress={handleSubmit}></Button>
       
       <Text>Forgot Password?</Text>
-      <Text>Don't have an account? <Link style={styles.link} to={{screen:"Signup"}}>Sign Up</Link></Text>
+      <Text>Don't have an account? <Link style={{color:'blue'}} to={{screen:"Signup"}}>Sign Up</Link></Text>
+      <Footer />
     </View>
   );
 }
@@ -43,9 +45,6 @@ const styles = StyleSheet.create({
     margin: 12,
     padding:10
   },
-  link: {
-    color:'red'
-  }
 });
 
 export default Login;
