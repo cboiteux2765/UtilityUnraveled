@@ -10,8 +10,33 @@ function Login() {
   const [email, onChangeEmail] = useState("");
   const [password, onChangePassword] = useState("");
 
-  function handleSubmit() {
-    
+  async function handleSubmit() {
+    const mongoose = require('mongoose');
+    const info = require('../info.json');
+    main().catch(err => console.log(err));
+  
+    await mongoose.connect(info.connection_string);
+    const connection = mongoose.connection;
+
+    let objectID = require('mongodb').ObjectId; // temp
+
+    let userSchema = mongoose.model("Users", new mongoose.Schema({
+      email: String,
+      password: String,
+      _id: objectID
+    }));
+  
+    try {
+      let user = {
+        email: email,
+        password: password,
+        _id: new objectID()
+      }
+      let userExists = await userSchema.exists(user);
+      // if (userExists) redirect to main page
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   return (

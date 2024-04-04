@@ -10,6 +10,28 @@ function Signup() {
   const [password, onChangePassword] = useState("");
   const [confirmPassword, onChangeConfirmPassword] = useState("");
 
+  async function handleSubmit() {
+    const mongoose = require('mongoose');
+    const info = require('../info.json');
+    main().catch(err => console.log(err));
+  
+    await mongoose.connect(info.connection_string);
+    const connection = mongoose.connection;
+
+    let objectID = require('mongodb').ObjectId; // temp
+  
+    try {
+      let user = {
+        email: email,
+        password: password,
+        _id: new objectID()
+      }
+      connection.collection('login-db').insertOne(user);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   return (
     <View style={tw`flex-1 justify-center items-center bg-green-300`}>
       <Text>UCSB Email</Text>
@@ -18,14 +40,10 @@ function Signup() {
       <TextInput secureTextEntry={true} onChangeText={onChangePassword} style={tw`bg-white border rounded-lg border-black border-2`} value={password}></TextInput>
       <Text>Confirm Password</Text>
       <TextInput secureTextEntry={true} onChangeText={onChangeConfirmPassword} style={tw`bg-white border rounded-lg border-black border-2`} value={confirmPassword}></TextInput>
-      <Button title="Sign Up"></Button>
+      <Button title="Sign Up" onPress={handleSubmit}></Button>
       <Footer />
     </View>
   );
-}
-
-function handlePress() {
-
 }
 
 const styles = StyleSheet.create({
