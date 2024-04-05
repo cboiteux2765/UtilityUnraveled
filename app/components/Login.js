@@ -15,28 +15,28 @@ function Login() {
     const info = require('../info.json');
     main().catch(err => console.log(err));
   
-    await mongoose.connect(info.connection_string);
-    const connection = mongoose.connection;
+  //   await mongoose.connect("mongodb+srv://cboiteux:zFlIzrmfti4CjSJl@login-db.8xbsc1t.mongodb.net/");
+  //   const connection = mongoose.connection;
 
-    let objectID = require('mongodb').ObjectId; // temp
+  //   let objectID = require('mongodb').ObjectId; // temp
 
-    let userSchema = mongoose.model("Users", new mongoose.Schema({
-      email: String,
-      password: String,
-      _id: objectID
-    }));
+  //   let userSchema = mongoose.model("Users", new mongoose.Schema({
+  //     email: String,
+  //     password: String,
+  //     _id: objectID
+  //   }));
   
-    try {
-      let user = {
-        email: email,
-        password: password,
-        _id: new objectID()
-      }
-      let userExists = await userSchema.exists(user);
-      // if (userExists) redirect to main page
-    } catch (e) {
-      console.error(e);
-    }
+  //   try {
+  //     let user = {
+  //       email: email,
+  //       password: password,
+  //       _id: new objectID()
+  //     }
+  //     let userExists = await userSchema.exists(user);
+  //     // if (userExists) redirect to main page
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
   }
 
   return (
@@ -46,7 +46,7 @@ function Login() {
       <Text>Password</Text>
       <TextInput secureTextEntry={true} onChangeText={onChangePassword} style={tw`bg-white border rounded-lg border-black border-2`} value={password}></TextInput>
       
-      <Button title="Submit" onPress={handleSubmit}></Button>
+      <Button title="Submit" /*onPress={handleSubmit}*/></Button>
       
       <Text>Forgot Password?</Text>
       <Text>Don't have an account? <Link style={{color:'blue'}} to={{screen:"Signup"}}>Sign Up</Link></Text>
