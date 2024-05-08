@@ -1,9 +1,11 @@
 // App.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import * as Location from 'expo-location';
 import { t } from 'react-native-tailwindcss';
 
 // Create Stack Navigator
@@ -25,7 +27,7 @@ function LoginScreen({ navigation }) {
 
     return (
         <View style={[t.flex1, t.justifyCenter, t.itemsCenter, t.bgGray100, t.p5]}>
-            <Text style={[t.text2xl, t.fontBold, t.mb5]}>Utility Unraveled</Text>
+            <Text style={[t.text2xl, t.fontBold, t.mb5]}>Welcome Back!</Text>
             <TextInput
                 style={[t.wFull, t.p3, t.my2, t.roundedLg, t.border, t.bgWhite]}
                 placeholder="Email"
@@ -54,16 +56,51 @@ function LoginScreen({ navigation }) {
     );
 }
 
-// Blank Screen (Navigated to on successful login)
+// Blank Screen with Map View
 function BlankScreen() {
+    const [location, setLocation] = useState(null);
+    const [region, setRegion] = useState({
+        latitude: 37.78825,
+        longitude: -122.4324,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+    });
+
+    useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                alert('Permission to access location was denied');
+                return;
+            }
+
+            let currentLocation = await Location.getCurrentPositionAsync({});
+            setLocation(currentLocation.coords);
+            setRegion({
+                ...region,
+                latitude: currentLocation.coords.latitude,
+                longitude: currentLocation.coords.longitude,
+            });
+        })();
+    }, []);
+
     return (
-        <View style={[t.flex1, t.justifyCenter, t.itemsCenter, t.bgWhite]}>
-            <Text style={[t.text2xl, t.fontBold]}>Blank Page</Text>
+        <View style={[t.flex1, t.bgWhite]}>
+            <MapView
+                style={[t.flex1]}
+                region={region}
+                showsUserLocation
+                showsMyLocationButton
+            >
+                {location && (
+                    <Marker coordinate={{ latitude: location.latitude, longitude: location.longitude }} />
+                )}
+            </MapView>
         </View>
     );
 }
 
-// Signup Screen (Placeholder Example)
+// Signup Screen (Placeholder)
 function SignupScreen() {
     return (
         <View style={[t.flex1, t.justifyCenter, t.itemsCenter, t.bgGray100, t.p5]}>
