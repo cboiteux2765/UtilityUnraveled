@@ -1,9 +1,9 @@
 // App.js
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Animated } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { t } from 'react-native-tailwindcss';
@@ -18,11 +18,12 @@ function LoginScreen({ navigation }) {
 
     const handleLogin = () => {
         // Simulate a successful login check
-        if (email === 'test@example.com' && password === 'password123') {
-            navigation.navigate('Blank'); // Navigate to Blank Page after successful login
-        } else {
-            Alert.alert('Login Failed', 'Incorrect email or password.');
-        }
+        // if (email === 'test@example.com' && password === 'password123') {
+        //     navigation.navigate('Blank'); // Navigate to Blank Page after successful login
+        // } else {
+        //     Alert.alert('Login Failed', 'Incorrect email or password.');
+        // }
+        navigation.navigate('Blank');
     };
 
     return (
@@ -58,43 +59,77 @@ function LoginScreen({ navigation }) {
 
 // Blank Screen with Map View
 function BlankScreen() {
-    const [location, setLocation] = useState(null);
-    const [region, setRegion] = useState({
-        latitude: 34.4140,
-        longitude: -119.8489,
-        latitudeDelta: 0.00622,
-        longitudeDelta: 0.0121,
-    });
+  const [region, setRegion] = useState({
+    latitude: 34.4140,
+    longitude: -119.8489,
+    latitudeDelta: 0.0622,
+    longitudeDelta: 0.0121,
+  });
 
-    useEffect(() => {
-        (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                alert('Permission to access location was denied');
-                return;
-            }
+  const [location, setLocation] = useState(null);
+  const [buttonSize, setButtonSize] = useState(60);
 
-            let currentLocation = await Location.getCurrentPositionAsync({});
-            setLocation(currentLocation.coords);
-            setRegion({
-                ...region,
-                latitude: currentLocation.coords.latitude,
-                longitude: currentLocation.coords.longitude,
-            });
-        })();
-    }, []);
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Permission to access location was denied');
+        return;
+      }
+
+      let currentLocation = await Location.getCurrentPositionAsync({});
+      setLocation(currentLocation.coords);
+      // setRegion({
+      //     ...region,
+      //     latitude: currentLocation.coords.latitude,
+      //     longitude: currentLocation.coords.longitude,
+      // });
+    })();
+  }, []);
+
+    const sizeAnim = useRef(new Animated.Value(10)).current;
+
+    // Button action function
+    const handleButtonPress = () => {
+      alert("Button Pressed");
+    }
+
+    const handleRegionChange = (newRegion) => {
+      setRegion(newRegion);
+      const zoomFactor = 0.0922 / newRegion.latitudeDelta;
+      const newSize = Math.max(30, 60 * zoomFactor);
+      setButtonSize(newSize);
+    };
 
     return (
-        <View style={[t.flex1, t.bgWhite]}>
+        <View style={[t.flex1]}>
             <MapView
                 style={[t.flex1]}
                 region={region}
+                onRegionChangeComplete={handleRegionChange}
                 showsUserLocation
                 showsMyLocationButton
             >
-                {location && (
-                    <Marker coordinate={{ latitude: location.latitude, longitude: location.longitude }} />
-                )}
+              {location && (
+                <Marker
+                  coordinate={{
+                    latitude: 34.41028,
+                    longitude: -119.84553,
+                  }}
+                >
+                  <TouchableOpacity
+                    style={[
+                      t.bgBlue500,
+                      t.itemsCenter,
+                      t.justifyCenter,
+                      { width: buttonSize, height: buttonSize, borderRadius: buttonSize / 2}
+                    ]}
+                    onPress={handleButtonPress}
+                  >
+                    <Text style={[t.textWhite, t.fontBold]}>Press Me</Text>
+                  </TouchableOpacity>
+                </Marker>
+              )}
             </MapView>
         </View>
     );

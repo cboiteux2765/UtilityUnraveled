@@ -11,7 +11,7 @@ npm install @react-navigation/native @react-navigation/stack
 npm install react-native-gesture-handler react-native-reanimated
 npm install react-native-tailwindcss
 npm install react-native-maps
-expo install expo-location
+npx expo install expo-location
 
 To view the app:
 npx expo start
