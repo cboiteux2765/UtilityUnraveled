@@ -12,6 +12,7 @@ npm install react-native-gesture-handler react-native-reanimated
 npm install react-native-tailwindcss
 npm install react-native-maps
 npx expo install expo-location
+npm install react-native-vector-icons
 
 To view the app:
 npx expo start

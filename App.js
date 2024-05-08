@@ -7,6 +7,7 @@ import { View, Text, TextInput, TouchableOpacity, Animated } from 'react-native'
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { t } from 'react-native-tailwindcss';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Create Stack Navigator
 const Stack = createStackNavigator();
@@ -23,7 +24,7 @@ function LoginScreen({ navigation }) {
         // } else {
         //     Alert.alert('Login Failed', 'Incorrect email or password.');
         // }
-        navigation.navigate('Blank');
+        navigation.navigate('Blank'); // bypass login system
     };
 
     return (
@@ -38,7 +39,7 @@ function LoginScreen({ navigation }) {
                 value={email}
             />
             <TextInput
-                style={[t.wFull, t.p3, t.my2, t.roundedLg, t.border, t.bgWhite]}
+                style={[t.wFull, t.p3, t.y2, t.roundedLg, t.border, t.bgWhite]}
                 placeholder="Password"
                 secureTextEntry
                 onChangeText={(text) => setPassword(text)}
@@ -60,14 +61,11 @@ function LoginScreen({ navigation }) {
 // Blank Screen with Map View
 function BlankScreen() {
   const [region, setRegion] = useState({
-    latitude: 34.4140,
-    longitude: -119.8489,
-    latitudeDelta: 0.0622,
-    longitudeDelta: 0.0121,
+    latitude: 34.4104,
+    longitude: -119.8448,
+    latitudeDelta: 0.0087,
+    longitudeDelta: 0.0058,
   });
-
-  const [location, setLocation] = useState(null);
-  const [buttonSize, setButtonSize] = useState(60);
 
   useEffect(() => {
     (async () => {
@@ -76,63 +74,77 @@ function BlankScreen() {
         alert('Permission to access location was denied');
         return;
       }
-
-      let currentLocation = await Location.getCurrentPositionAsync({});
-      setLocation(currentLocation.coords);
-      // setRegion({
-      //     ...region,
-      //     latitude: currentLocation.coords.latitude,
-      //     longitude: currentLocation.coords.longitude,
-      // });
     })();
   }, []);
 
-    const sizeAnim = useRef(new Animated.Value(10)).current;
+  const [barHeight, setBarHeight] = useState(15);
+  const [barWidth, setBarWidth] = useState(barHeight / 2);
+  const [capacity, setCapacity] = useState(0.8);
+  const [topSize, setTopSize] = useState(barHeight * (1 - capacity));
+  const [bottomSize, setBottomSize] = useState(barHeight - topSize);
 
-    // Button action function
-    const handleButtonPress = () => {
-      alert("Button Pressed");
+  // Button action function
+  const handleButtonPress = () => {
+    alert("Button Pressed\n"
+      + "Latitute: " + region.latitude + "\n"
+      + "Longitude: " + region.longitude + "\n"
+      + "Latitude Delta: " + region.latitudeDelta + "\n"
+      + "Longitude Delta: " + region.longitudeDelta
+    );
+  }
+
+  const handleRegionChange = (newRegion) => {
+    setRegion(newRegion);
+
+    const maxHeight = 15;
+    const disappearThreshold = 0.006;
+    let newHeight;
+    if (newRegion.latitudeDelta > disappearThreshold) {
+      newHeight = 0;
+    } else {
+      newHeight = Math.min(maxHeight, -2222*newRegion.latitudeDelta + 17.89);
     }
 
-    const handleRegionChange = (newRegion) => {
-      setRegion(newRegion);
-      const zoomFactor = 0.0922 / newRegion.latitudeDelta;
-      const newSize = Math.max(30, 60 * zoomFactor);
-      setButtonSize(newSize);
-    };
+    setBarHeight(newHeight);
+    setBarWidth(newHeight / 2);
+    setTopSize(newHeight * (1 - capacity));
+    setBottomSize(newHeight - topSize);
+  };
 
-    return (
-        <View style={[t.flex1]}>
-            <MapView
-                style={[t.flex1]}
-                region={region}
-                onRegionChangeComplete={handleRegionChange}
-                showsUserLocation
-                showsMyLocationButton
-            >
-              {location && (
-                <Marker
-                  coordinate={{
-                    latitude: 34.41028,
-                    longitude: -119.84553,
-                  }}
-                >
-                  <TouchableOpacity
-                    style={[
-                      t.bgBlue500,
-                      t.itemsCenter,
-                      t.justifyCenter,
-                      { width: buttonSize, height: buttonSize, borderRadius: buttonSize / 2}
-                    ]}
-                    onPress={handleButtonPress}
-                  >
-                    <Text style={[t.textWhite, t.fontBold]}>Press Me</Text>
-                  </TouchableOpacity>
-                </Marker>
-              )}
-            </MapView>
-        </View>
-    );
+  return (
+    <View style={[t.flex1]}>
+      <MapView
+        style={[t.flex1]}
+        region={region}
+        onRegionChangeComplete={handleRegionChange}
+        showsUserLocation
+      >
+        <Marker
+          coordinate={{
+            latitude: 34.41047,
+            longitude: -119.84535,
+          }}
+        >
+          <TouchableOpacity
+            onPress={handleButtonPress}
+            style={[
+              t.itemsCenter,
+              t.justifyCenter,
+              {width: barWidth * 8},
+              {height: barHeight * 8},
+              t.rounded,
+            ]}
+          >
+            <MaterialIcon name="local-laundry-service" size={barWidth * 4} color="#000" />
+            <View style={[t.bgRed500, {height: topSize * 4}, {width: barWidth * 4}, t.roundedT, t.itemsCenter, t.justifyCenter]}>
+            </View>
+            <View style={[t.bgGreen500, {height: bottomSize * 4}, {width: barWidth * 4}, t.roundedB, t.itemsCenter, t.justifyCenter]}>
+            </View>
+          </TouchableOpacity>
+        </Marker>
+      </MapView>
+    </View>
+  );
 }
 
 // Signup Screen (Placeholder)
