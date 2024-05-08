@@ -60,10 +60,10 @@ function LoginScreen({ navigation }) {
 function BlankScreen() {
     const [location, setLocation] = useState(null);
     const [region, setRegion] = useState({
-        latitude: 37.78825,
-        longitude: -122.4324,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
+        latitude: 34.4140,
+        longitude: -119.8489,
+        latitudeDelta: 0.00622,
+        longitudeDelta: 0.0121,
     });
 
     useEffect(() => {
