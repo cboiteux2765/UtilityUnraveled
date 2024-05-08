@@ -1,9 +1,24 @@
-/** @type {import('tailwindcss').Config} */
+// tailwind.config.js
 module.exports = {
-  content: ["./App.{js,jsx,ts,tsx}"], // add "./<custom directory>/**/*.{js,jsx,ts,tsx}"
   theme: {
-    extend: {},
+      extend: {
+          colors: {
+              // Add custom colors
+              primary: '#3490dc',
+              secondary: '#ffed4a',
+              danger: '#e3342f',
+          },
+          borderRadius: {
+              // Add custom border-radius sizes
+              'xl': '1rem',
+          },
+      },
   },
   plugins: [],
-}
-
+  content: [
+      // Define the paths to files that will use Tailwind classes
+      "./App.js",
+      "./screens/**/*.{js,jsx,ts,tsx}",
+      "./components/**/*.{js,jsx,ts,tsx}"
+  ],
+};
