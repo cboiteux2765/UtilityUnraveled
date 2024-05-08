@@ -1,0 +1,19 @@
+I mainly used this website (https://www.nativewind.dev/quick-starts/expo) to set up the project.
+My best guess is that not all of the commands need to be run again to set up the app after downloading
+the Github repo. If following the instructions listed below does not work, lmk.
+
+Use Node.js v20.13.0 (LTS) (idk if this is important but thats the version I used).
+
+Commands (at least for MacOS):
+npm install nativewind
+npm install --save-dev tailwindcss@3.3.2
+
+To view the app:
+npx expo start
+
+Scan the QR code on your phone.
+
+.gitignore is hiding the folders .expo (is generated when you run npx expo start, comes with a
+README.md for more info) and node_modules (huge folder). Might have to run "npm install" to
+download node_modules (have not tested this). Try viewing the app before doing that though.
+Good luck :)
